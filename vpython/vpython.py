@@ -387,6 +387,8 @@ def commsend():
                             
             if (ob is not None) and (hasattr(ob,'methodsupdt')) and (len(ob.methodsupdt) > 0 ):
                 for m in ob.methodsupdt: # a list
+                    if L >= len(commcmds):
+                        break
                     if 'attr' in commcmds[L]: del commcmds[L]['attr'] # if left over from previous use of slot
                     method = m[0]
                     data = m[1]
