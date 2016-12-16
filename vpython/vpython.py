@@ -384,11 +384,12 @@ def commsend():
                                 commcmds[L]['attr'] = attr
                                 commcmds[L]['val'] = attrval
                             L += 1
+                            if L > baseObj.qSize:
+                                baseObj.glow.comm.send(encode_attr(commcmds[:L]))  # Send attributes and methods to glowcomm
+                                L = 0
                             
             if (ob is not None) and (hasattr(ob,'methodsupdt')) and (len(ob.methodsupdt) > 0 ):
                 for m in ob.methodsupdt: # a list
-                    if L >= len(commcmds):
-                        break
                     if 'attr' in commcmds[L]: del commcmds[L]['attr'] # if left over from previous use of slot
                     method = m[0]
                     data = m[1]
@@ -397,6 +398,9 @@ def commsend():
                     if method == 'add_to_trail': data = data.value
                     commcmds[L]['val'] = data
                     L += 1
+                    if L > baseObj.qSize:
+                        baseObj.glow.comm.send(encode_attr(commcmds[:L]))  # Send attributes and methods to glowcomm
+                        L = 0
                 ob.methodsupdt = []
                 
             if L > baseObj.qSize:
